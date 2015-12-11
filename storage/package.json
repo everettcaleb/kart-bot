@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/everettcaleb/kart-bot/issues"
   },
-  "homepage": "https://github.com/everettcaleb/kart-bot#readme"
+  "homepage": "https://github.com/everettcaleb/kart-bot#readme",
+  "dependencies": {
+    "pg": "^4.4.3"
+  }
 }

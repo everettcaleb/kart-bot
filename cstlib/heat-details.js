@@ -120,7 +120,8 @@
 
                 _racers[racer.id] = {
                     id: racer.id,
-                    name: racer.name
+                    name: racer.name,
+                    skill: null
                 };
 
                 _heatRacers[`${data.id}_${racer.id}`] = {
@@ -131,7 +132,10 @@
                     gapTime: timeOrLapsGap.time,
                     gapLaps: timeOrLapsGap.laps,
                     lapCount: racer.lapCount,
-                    averageLapTime: racer.averageLapTime
+                    averageLapTime: racer.averageLapTime,
+                    skill: null,
+                    skillDelta: null,
+                    kartNumber: null
                 };
 
                 racer.laps.forEach((lap) => {

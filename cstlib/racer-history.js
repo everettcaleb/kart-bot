@@ -73,6 +73,7 @@
                 heats.push({
                     id: h.id.replace('"', "'"),
                     desc: h.desc.replace('"', "'"),
+                    winBy: null,
                     date: h.date.replace('"', "'")
                 });
                 heatRacers.push({
@@ -80,6 +81,10 @@
                     racerId: data.id,
                     position: h.position.replace('"', "'"),
                     bestLapTime: h.bestTime.replace('"', "'"),
+                    gapTime: null,
+                    gapLaps: null,
+                    lapCount: null,
+                    averageLapTime: null,
                     skill: h.skill.replace('"', "'"),
                     skillDelta: h.skillDelta.replace('"', "'"),
                     kartNumber: h.kart.replace('"', "'")
