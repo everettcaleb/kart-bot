@@ -1,6 +1,7 @@
 "use strict";
 !()=>{
     let helpers = require('./helpers.js'),
+        dataHelpers = require('./data-helpers.js'),
         HEAT_DETAILS_PAGE_NAME = 'heatdetails.aspx';
 
     function getPage(id, callback) {
@@ -95,5 +96,68 @@
         });
     }
 
+    function getHeatDetailsByIdAsHashes(id, callback) {
+        getHeatDetailsById(id, (err, data) => {
+            let _racers = {},
+                _heats = {},
+                _heatRacers = {},
+                _heatRacerLaps = {};
+
+            if(err) {
+                callback(err);
+                return;
+            }
+
+            _heats[data.id] = {
+                id: data.id,
+                desc: data.desc,
+                winBy: data.winByDesc,
+                date: data.date
+            };
+
+            data.racers.forEach((racer) => {
+                let timeOrLapsGap = helpers.extractTimeOrLapGap(racer.gap)
+
+                _racers[racer.id] = {
+                    id: racer.id,
+                    name: racer.name
+                };
+
+                _heatRacers[`${data.id}_${racer.id}`] = {
+                    heatId: data.id,
+                    racerId: racer.id,
+                    position: racer.position,
+                    bestLapTime: racer.bestLapTime,
+                    gapTime: timeOrLapsGap.time,
+                    gapLaps: timeOrLapsGap.laps,
+                    lapCount: racer.lapCount,
+                    averageLapTime: racer.averageLapTime
+                };
+
+                racer.laps.forEach((lap) => {
+                    if(!lap['time'] || !lap['position']){
+                        return;
+                    }
+
+                    _heatRacerLaps[`${data.id}_${racer.id}_${lap.id}`] = {
+                        heatId: data.id,
+                        racerId: racer.id,
+                        id: lap.id,
+                        time: lap.time,
+                        position: lap.position
+                    };
+                });
+            });
+
+            callback(null, {
+                racers: dataHelpers.applyToHash(_racers),
+                heats: dataHelpers.applyToHash(_heats),
+                heatRacers: dataHelpers.applyToHash(_heatRacers),
+                heatRacerLaps: dataHelpers.applyToHash(_heatRacerLaps)
+            });
+        });
+    }
+
     module.exports.getHeatDetailsById = getHeatDetailsById;
+    module.exports.getHeatDetailsByIdAsHashes = getHeatDetailsByIdAsHashes;
 }();

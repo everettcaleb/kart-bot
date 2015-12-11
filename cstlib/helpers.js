@@ -8,7 +8,8 @@
         HEATNO_REGEX = /\\?HeatNo=(\d+)/,
         POS_REGEX = /(\d+)/,
         SKILL_REGEX = /(\d+) \((-?\d+)\)/,
-        LAP_REGEX = /(.+) \[(\d+)\]/;
+        LAP_REGEX = /(.+) \[(\d+)\]/,
+        TIME_REGEX = /[^L]+$/;
 
     //callback = function(err, callback)
     function getPage(root, path, callback) {
@@ -63,6 +64,27 @@
         return null;
     }
 
+    function extractTimeOrLapGap(str) {
+        if(str == '-') {
+            return {
+                time: null,
+                laps: null
+            };
+        }
+        if(TIME_REGEX.exec(str)) {
+            return {
+                time: str,
+                laps: null
+            };
+        }
+        else {
+            return {
+                time: null,
+                laps: str.slice(0, -1)
+            };
+        }
+    }
+
     module.exports.getPage = getPage;
     module.exports.ROOT_URL = ROOT_URL;
     module.exports.extractRaceHistory = extractRaceHistory;
@@ -71,4 +93,5 @@
     module.exports.extractPosition = extractPosition;
     module.exports.extractSkill = extractSkill;
     module.exports.extractLap = extractLap;
+    module.exports.extractTimeOrLapGap = extractTimeOrLapGap;
 }();

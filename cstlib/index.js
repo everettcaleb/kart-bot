@@ -14,6 +14,6 @@
     };
     module.exports.heatDetails = {
         getById: heatDetails.getHeatDetailsById,
-        getByIdAsHashes: null
+        getByIdAsHashes: heatDetails.getHeatDetailsByIdAsHashes
     };
 }();

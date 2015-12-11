@@ -56,7 +56,30 @@ function f6() {
         console.log('');
         console.log(hashes.heatRacerLaps.toCsv());
         console.log('');
+        f7();
     });
 }
 
-f1();
+function f7() {
+    console.log('cstlib.heatDetails.getByIdAsHashes(72964)');
+    cstlib.heatDetails.getByIdAsHashes(72964, function(err, hashes) {
+        console.log(JSON.stringify(hashes));
+        console.log('');
+        f8();
+    });
+}
+
+function f8() {
+    cstlib.heatDetails.getByIdAsHashes(72964, function(err, hashes) {
+        console.log(hashes.racers.toCsv());
+        console.log('');
+        console.log(hashes.heats.toCsv());
+        console.log('');
+        console.log(hashes.heatRacers.toCsv());
+        console.log('');
+        console.log(hashes.heatRacerLaps.toCsv());
+        console.log('');
+    });
+}
+
+f8();
