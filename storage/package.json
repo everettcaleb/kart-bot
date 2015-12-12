@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/everettcaleb/kart-bot#readme",
   "dependencies": {
-    "pg": "^4.4.3"
+    "pg": "^4.4.3",
+    "pg-native": "^1.9.0"
   }
 }
