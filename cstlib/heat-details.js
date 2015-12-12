@@ -110,13 +110,13 @@
 
             _heats[data.id] = {
                 id: data.id,
-                desc: data.desc,
-                winBy: data.winByDesc,
-                date: data.date
+                desc: data.desc.replace('"', "'"),
+                winBy: data.winByDesc.replace('"', "'"),
+                date: data.date.replace('"', "'")
             };
 
             data.racers.forEach((racer) => {
-                let timeOrLapsGap = helpers.extractTimeOrLapGap(racer.gap)
+                let timeOrLapsGap = helpers.extractTimeOrLapGap(racer.gap.replace('"', "'"))
 
                 _racers[racer.id] = {
                     id: racer.id,
@@ -127,12 +127,12 @@
                 _heatRacers[`${data.id}_${racer.id}`] = {
                     heatId: data.id,
                     racerId: racer.id,
-                    position: racer.position,
-                    bestLapTime: racer.bestLapTime,
+                    position: racer.position.replace('"', "'"),
+                    bestLapTime: racer.bestLapTime.replace('"', "'"),
                     gapTime: timeOrLapsGap.time,
                     gapLaps: timeOrLapsGap.laps,
-                    lapCount: racer.lapCount,
-                    averageLapTime: racer.averageLapTime,
+                    lapCount: racer.lapCount.replace('"', "'"),
+                    averageLapTime: racer.averageLapTime.replace('"', "'"),
                     skill: null,
                     skillDelta: null,
                     kartNumber: null
@@ -147,8 +147,8 @@
                         heatId: data.id,
                         racerId: racer.id,
                         id: lap.id,
-                        time: lap.time,
-                        position: lap.position
+                        time: lap.time.replace('"', "'"),
+                        position: lap.position.replace('"', "'")
                     };
                 });
             });
