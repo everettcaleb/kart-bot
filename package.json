@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/everettcaleb/kart-bot#readme",
   "dependencies": {
-    "cstlib": "file:cstlib"
+    "cstlib": "file:cstlib",
+    "storage": "file:storage"
   }
 }

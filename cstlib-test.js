@@ -82,4 +82,16 @@ function f8() {
     });
 }
 
+function f9_db() {
+    cstlib.heatDetails.getByIdAsHashes(72964, function(err, hashes) {
+        var Database = require('storage').Database;
+        var db = new Database();
+        db.insertRacers(hashes.racers);
+        db.insertHeats(hashes.heats);
+        db.insertHeatRacers(hashes.heatRacers);
+        db.insertHeatRacerLaps(hashes.heatRacerLaps);
+        db.flush((err)=>{if(err){console.error(err);}});
+    });
+}
+
 f1();
