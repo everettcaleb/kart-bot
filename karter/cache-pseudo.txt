@@ -1,0 +1,39 @@
+Racers
+
+// processRacer = function(id, callback), callback = function(err)
+// outerCallback = function(err)
+function test(processRacer, outerCallback) {
+    async.waterfall([
+        callback => {
+            callback(null, [1, 3, 5, 10]);
+        },
+        cache.queueRacerIds,
+        cache.reduceRacerIds
+    ], (err, result) => {
+        if(err) { outerCallback(err); return; }
+
+        function popAndProcess() {
+            cache.popRacerId((err, id) => {
+                if(err) { outerCallback(err); }
+                else if(!id) { outerCallback(null); }
+                else {
+                    processRacer(id, (err) => {
+                        if(err) { outerCallback(err); }
+                        else {
+                            cache.storeRacerId(id, (err) => {
+                                if(err) { outerCallback(err); }
+                                else { popAndProcess(); }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        popAndProcess();
+    });
+}
+
+cache.queueRacerIds([1, 3, 5, 10]);
+test((err) => {
+    console.error(err);
+});

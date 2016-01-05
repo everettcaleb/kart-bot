@@ -31,10 +31,37 @@
         client.spop(`${type}Queue`, callback);
     }
 
-    // Stores an id in the main collection named ${type}s
+    // Stores an id and object in the main collection named ${type}s and ${type}${id}
     // callback = function(err)
-    function storeId(type, id, callback) {
-        client.sadd(`${type}s`, id, callback);
+    function store(type, id, data, callback) {
+        client.sadd(`${type}s`, id, (err) => {
+            if(err) {
+                callback(err);
+                return;
+            }
+
+            client.set(`${type}${id}`, data, (err2) => {
+                if(err) {
+                    callback(err);
+                }
+                else {
+                    callback(null);
+                }
+            });
+        });
+    }
+
+    // Retrieves an object from main collection by ID
+    // callback = function(err, obj)
+    function retrieve(type, id, callback) {
+        client.get(`${type}${id}`, (err, result) => {
+            if(err) {
+                callback(err);
+                return;
+            }
+
+            callback(null, result);
+        });
     }
 
     //========================================
@@ -50,13 +77,13 @@
 
     module.exports['queueIds'] = queueIds;
     module.exports['reduceIds'] = reduceIds;
-    module.exports['popId'] = popIds;
-    module.exports['storeId'] = storeId;
+    module.exports['popId'] = popId;
+    module.exports['store'] = store;
 
     types.map(type => {
         module.exports[`queue${type}Ids`] = queueIds.bind(null, type);
         module.exports[`reduce${type}Ids`] = reduceIds.bind(null, type);
-        module.exports[`pop${type}Id`] = popIds.bind(null, type);
-        module.exports[`store${type}Id`] = storeId.bind(null, type);
+        module.exports[`pop${type}Id`] = popId.bind(null, type);
+        module.exports[`store${type}`] = store.bind(null, type);
     });
 }();
